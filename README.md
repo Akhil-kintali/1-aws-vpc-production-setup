@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 AWS VPC Production Environment Setup
 📌 Project Overview
 
@@ -144,3 +145,7 @@ aws-vpc-production-setup/
 │   └── main.tf
 │── cloudformation/    # (If you use CFN templates)
 │   └── template.yaml
+=======
+# 1-aws-vpc-production-setup
+Highly available AWS VPC setup with public/private subnets, ALB, Auto Scaling Group, NAT Gateways, and Bastion Host for production workloads.
+>>>>>>> 0a78f82491493b70676bee6b2c4a1d0b04b11909

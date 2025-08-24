@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 AWS VPC Production Environment Setup
 📌 Project Overview
 
@@ -19,16 +18,25 @@ Bastion Host for secure SSH access to private EC2 instances.
 🏗️ Architecture Diagram
 flowchart TB
     Internet -->|HTTPS/HTTP| ALB
+
+# AWS VPC Production Environment Setup
+
+## Overview
+This project demonstrates a highly available and secure AWS VPC architecture suitable for production environments. It includes public/private subnets, Application Load Balancer (ALB), Auto Scaling Group (ASG), NAT Gateways, and a Bastion Host.
+
+## Architecture Diagram
+Text-based diagram (for quick reference):
+
+```mermaid
+flowchart TB
+    Internet -->|HTTPS/HTTP| ALB
     ALB -->|Traffic| ASG
     ASG --> EC2_1[Private EC2 - AZ1]
     ASG --> EC2_2[Private EC2 - AZ2]
-    
     Bastion[Bastion Host (Public Subnet)] --> EC2_1
     Bastion --> EC2_2
-
     EC2_1 -->|Outbound| NAT1[NAT Gateway AZ1]
     EC2_2 -->|Outbound| NAT2[NAT Gateway AZ2]
-
     subgraph VPC[VPC]
       subgraph Public[Public Subnets]
         ALB
@@ -41,111 +49,49 @@ flowchart TB
         EC2_2
       end
     end
+```
 
-⚙️ Components and Their Purpose
-1️⃣ VPC (Virtual Private Cloud)
+For a visual diagram, see `vpc-example-private-subnets.png`.
 
-A logically isolated network within AWS.
+## Components
 
-Provides full control over IP addressing, routing, and security.
+- **VPC (Virtual Private Cloud):** Isolated network, full control over IPs, routing, and security.
+- **Subnets:**
+  - *Public Subnets (2):* For ALB, Bastion Host, NAT Gateways. Internet access enabled.
+  - *Private Subnets (2):* For EC2 instances. No direct internet; outbound via NAT.
+- **Internet Gateway (IGW):** Enables internet access for public subnets.
+- **NAT Gateways (2):** Outbound internet for private subnets, one per AZ for HA.
+- **Bastion Host:** Secure SSH access to private EC2s, restricted by Security Groups.
+- **Application Load Balancer (ALB):** Distributes traffic, provides HA and health checks.
+- **Auto Scaling Group (ASG):** Scales EC2s based on demand, integrates with ALB.
+- **EC2 Instances:** Application servers in private subnets, no public IPs.
+- **Route Tables:**
+  - *Public:* Routes to IGW.
+  - *Private:* Routes outbound to NAT Gateway.
 
-Used to securely host public-facing and internal applications.
+## Security Considerations
 
-2️⃣ Subnets
+- Security Groups follow least privilege.
+- Bastion Host restricted to trusted IPs.
+- ALB is public; EC2s remain private.
+- NAT Gateways allow only outbound access.
 
-Public Subnets (2):
+## Key Benefits
 
-Used for ALB, Bastion Host, and NAT Gateways.
+- **High Availability:** Resources across 2 AZs.
+- **Scalability:** Auto Scaling with ALB.
+- **Security:** Private subnets, Bastion Host, NAT Gateways.
+- **Cost Optimization:** Elastic scaling.
 
-Have internet gateway route for inbound/outbound internet access.
+## Repository Structure Example
 
-Private Subnets (2):
-
-Used for hosting EC2 instances behind ALB.
-
-No direct internet access; outbound traffic goes via NAT Gateways.
-
-3️⃣ Internet Gateway (IGW)
-
-Allows communication between VPC resources and the internet.
-
-Attached to the VPC and routes traffic from public subnets.
-
-4️⃣ NAT Gateways (2, one per AZ)
-
-Provide outbound internet access to EC2 instances in private subnets.
-
-Ensures high availability by deploying one NAT Gateway in each AZ.
-
-Prevents direct inbound traffic from the internet.
-
-5️⃣ Bastion Host (Jump Box)
-
-Secure entry point to access private EC2 instances.
-
-Deployed in public subnet with restricted SSH access (via Security Groups).
-
-Enhances security by avoiding direct SSH into private resources.
-
-6️⃣ Application Load Balancer (ALB)
-
-Distributes incoming traffic across multiple EC2 instances in private subnets.
-
-Provides high availability, fault tolerance, and automatic health checks.
-
-Operates at Layer 7 (HTTP/HTTPS), supporting advanced routing features.
-
-7️⃣ Auto Scaling Group (ASG)
-
-Automatically adjusts EC2 instance count based on demand.
-
-Ensures application availability during traffic spikes.
-
-Works with ALB to register/deregister instances dynamically.
-
-8️⃣ EC2 Instances
-
-Application servers hosted in private subnets.
-
-Do not have public IPs for enhanced security.
-
-Accessible via Bastion Host for administration.
-
-9️⃣ Route Tables
-
-Public Route Table: Routes traffic from public subnets to Internet Gateway.
-
-Private Route Table: Routes outbound traffic from private subnets to NAT Gateway.
-
-🔒 Security Considerations
-
-Security Groups are configured with least privilege principle.
-
-Bastion Host restricted to trusted IPs for SSH access.
-
-ALB exposed to the internet, but EC2 instances remain private.
-
-NAT Gateways allow secure outbound access only.
-
-✅ Key Benefits of this Architecture
-
-High Availability (resources spread across 2 AZs).
-
-Scalability (Auto Scaling with ALB).
-
-Security (private subnets, Bastion Host, NAT Gateways).
-
-Cost Optimization (elastic scaling based on demand).
-
-📂 Repository Structure Example
+```
 aws-vpc-production-setup/
 │── README.md          # Project Documentation
-│── architecture.png   # Optional - Exported Architecture Diagram
-│── terraform/         # (If you use Terraform/IaC)
+│── vpc-example-private-subnets.png   # Architecture Diagram
+│── terraform/         # (If using Terraform/IaC)
 │   └── main.tf
-│── cloudformation/    # (If you use CFN templates)
+│── cloudformation/    # (If using CloudFormation)
 │   └── template.yaml
-=======
-# 1-aws-vpc-production-setup
-Highly available AWS VPC setup with public/private subnets, ALB, Auto Scaling Group, NAT Gateways, and Bastion Host for production workloads.
->>>>>>> 0a78f82491493b70676bee6b2c4a1d0b04b11909
+```
+7️⃣ Auto Scaling Group (ASG)

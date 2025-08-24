@@ -137,20 +137,20 @@ Text-based diagram (for quick reference):
 flowchart TB
     Internet -->|HTTPS/HTTP| ALB
     ALB -->|Traffic| ASG
-    ASG --> EC2_1[Private EC2 - AZ1]
-    ASG --> EC2_2[Private EC2 - AZ2]
-    Bastion[Bastion Host (Public Subnet)] --> EC2_1
+    ASG --> EC2_1
+    ASG --> EC2_2
+    Bastion --> EC2_1
     Bastion --> EC2_2
-    EC2_1 -->|Outbound| NAT1[NAT Gateway AZ1]
-    EC2_2 -->|Outbound| NAT2[NAT Gateway AZ2]
-    subgraph VPC[VPC]
-      subgraph Public[Public Subnets]
+    EC2_1 -->|Outbound| NAT1
+    EC2_2 -->|Outbound| NAT2
+    subgraph VPC
+      subgraph Public
         ALB
         Bastion
         NAT1
         NAT2
       end
-      subgraph Private[Private Subnets]
+      subgraph Private
         EC2_1
         EC2_2
       end

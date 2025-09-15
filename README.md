@@ -1,4 +1,3 @@
-
 # 🏗️ AWS VPC Production Setup Documentation
 
 This project demonstrates the setup of a production-grade VPC architecture in AWS. The design ensures high availability, security, scalability, and fault tolerance by using multiple subnets across two Availability Zones (AZs), an Auto Scaling Group, an Application Load Balancer, NAT Gateways, and a Bastion Host.
